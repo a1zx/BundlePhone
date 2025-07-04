@@ -1,358 +1,239 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Магазин телефонов</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>Phone Candy Shop</title>
+  <meta name="theme-color" content="#f7f7fb">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
-    html, body {
-      height: 100%;
-      background: #f7f7fb;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-      color: #222;
-    }
     .hidden { display: none !important; }
-
+    :root {
+      --main: #675cff;
+      --main2: #fe2c55;
+      --shadow: 0 2px 18px #6563ff19;
+      --radius: 18px;
+      --bg: #f7f7fb;
+      --block: #fff;
+      --soft: #f3f5fa;
+    }
+    html, body {
+      background: var(--bg);
+      margin: 0; padding: 0;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      color: #18192c;
+      min-height: 100vh;
+      height: 100%;
+    }
+    body { display: flex; flex-direction: column; min-height: 100vh; }
     .header {
-      position: sticky;
-      top: 0;
-      background: #fff;
-      padding: 13px 18px 8px 18px;
-      z-index: 10;
-      box-shadow: 0 2px 10px #0001;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      position: sticky; top: 0;
+      background: var(--block);
+      padding: 18px 0 9px 0; z-index: 20;
+      box-shadow: 0 1px 10px #6563ff0a;
+      display: flex; flex-direction: column; align-items: center;
+      border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
+      min-height: 62px;
+    }
+    .logo {
+      font-weight: 900; font-size: 1.35rem; letter-spacing: 2px;
+      color: var(--main);
+      background: linear-gradient(90deg, var(--main) 40%, var(--main2) 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 1px 9px #6563ff0a;
+      margin-bottom: 6px; user-select: none;
     }
     .search-bar {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      border-radius: 20px;
-      background: #eee;
-      padding: 6px 12px;
+      width: 90vw; max-width: 380px; display: flex; align-items: center;
+      border-radius: 16px; background: var(--soft); padding: 6px 13px;
+      box-shadow: 0 1.5px 9px #9992;
     }
     .search-bar input {
-      border: none;
-      outline: none;
-      background: none;
-      font-size: 1.07rem;
-      width: 100%;
-      padding: 4px;
-      background: none;
-      color: #222;
+      border: none; outline: none; background: none;
+      font-size: 1.07rem; width: 100%; color: #222;
+      padding: 3px 0; background: none; font-family: inherit; border-radius: 10px;
     }
     .main-list {
-      padding: 16px 0 64px 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      justify-content: center;
-      max-width: 700px;
-      margin: 0 auto;
+      padding: 20px 0 76px 0; display: flex; flex-wrap: wrap; gap: 20px;
+      justify-content: center; max-width: 520px; margin: 0 auto; z-index: 1;
     }
     .card {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 2px 10px #0001;
-      padding: 16px 12px 13px 12px;
-      width: 210px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      position: relative;
-      transition: box-shadow .15s, transform .13s;
-      user-select: none;
-      min-height: 250px;
+      background: var(--block); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 18px 12px 16px 12px; width: 195px;
+      display: flex; flex-direction: column; align-items: center;
+      cursor: pointer; position: relative;
+      transition: box-shadow .14s, transform .14s; user-select: none;
+      min-height: 220px; border: 1.5px solid #edeef9; overflow: hidden;
     }
-    .card:hover {
-      box-shadow: 0 7px 28px #6563ff22;
-      transform: translateY(-2px) scale(1.017);
+    .card:hover, .card:active {
+      box-shadow: 0 9px 36px #675cff21;
+      border: 1.8px solid var(--main2);
+      transform: translateY(-3px) scale(1.016);
     }
     .card-img {
-      width: 94px;
-      height: 122px;
-      object-fit: contain;
-      border-radius: 12px;
-      background: #f3f5fa;
-      margin-bottom: 7px;
-      transition: filter .13s;
-      filter: drop-shadow(0 4px 12px #8881);
+      width: 81px; height: 107px; object-fit: contain; border-radius: 13px;
+      background: #f3f5fa; margin-bottom: 7px; transition: filter .13s;
+      filter: drop-shadow(0 4px 14px #8891); box-shadow: 0 2px 10px #d6dcfc;
     }
-    .color-dots {
-      margin: 4px 0 8px 0;
-      display: flex;
-      gap: 7px;
-    }
-    .color-dot {
-      width: 13px; height: 13px;
-      border-radius: 50%;
-      border: 2px solid #eee;
-    }
+    .color-dots { margin: 5px 0 10px 0; display: flex; gap: 9px; }
+    .color-dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid #ececec; box-shadow: 0 1px 4px #aaa3; }
     .card-title {
-      font-size: 1.08rem;
-      font-weight: 600;
-      margin: 2px 0 0 0;
-      text-align: center;
-      letter-spacing: .2px;
+      font-size: 1.03rem; font-weight: 800; margin: 0 0 1px 0;
+      text-align: center; letter-spacing: .1px; line-height: 1.21;
+      color: #1b1c26; text-shadow: 0 2px 14px #ced6ff22;
     }
     .card-desc {
-      font-size: 0.93rem;
-      color: #666;
-      text-align: center;
-      margin-bottom: 3px;
-      margin-top: 1px;
+      font-size: 0.95rem; color: #838ab1; text-align: center;
+      margin-bottom: 4px; margin-top: 0.5px; line-height: 1.14; font-weight: 600;
     }
-    .card-stars {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      margin-bottom: 3px;
-      font-size: 0.99em;
-    }
-    .star {
-      color: gold;
-      font-size: 1.09rem;
-      margin-right: 1.5px;
-      filter: drop-shadow(0 1px 1px #fe2c5512);
-    }
-    .sim-icons {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 2px;
-      margin-top: 2px;
-      justify-content: center;
-    }
+    .card-stars { display: flex; align-items: center; gap: 2px; margin-bottom: 3px; font-size: 1.03em; letter-spacing: 0.01em; }
+    .star { color: gold; font-size: 1.07rem; margin-right: 1.1px; filter: drop-shadow(0 1px 1px #fe2c5512); text-shadow: 0 1px 2px #ffefb7b9; }
+    .sim-icons { display: flex; gap: 11px; margin: 7px 0 0 0; justify-content: center; }
     .sim-icon-img {
-      width: 23px; height: 23px; background: #f3f4fa; border-radius: 6px;
-      padding: 2px; border: 1.2px solid #eee;
-      object-fit: contain;
-      box-shadow: 0 1px 3px #e4e6f8;
+      width: 36px; height: 36px; background: #f7f7fa; border-radius: 9px;
+      border: 2px solid #e7e8fc; object-fit: contain; box-shadow: 0 1px 7px #e2e6fc;
+      padding: 2px; transition: box-shadow .12s, border .12s;
     }
     .footer {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #fff;
-      box-shadow: 0 -1px 8px #0001;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--block); box-shadow: 0 -1px 10px #675cff14; height: 59px;
+      display: flex; align-items: center; justify-content: center; z-index: 21;
+      border-top-left-radius: 15px; border-top-right-radius: 15px;
     }
     .bell {
-      width: 26px; height: 26px;
-      opacity: 0.67;
+      width: 27px; height: 27px; opacity: 0.62;
+      filter: drop-shadow(0 1.2px 2.5px #675cff16);
     }
-
-    /* Modal */
     .modal-bg {
-      position: fixed;
-      top:0;left:0;right:0;bottom:0;
-      background: rgba(30,30,50,0.11);
-      z-index: 99;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background .21s;
+      position: fixed; top:0;left:0;right:0;bottom:0;
+      background: rgba(64,65,84,0.11); z-index: 99;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .18s;
     }
     .modal {
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 2px 30px #0003;
-      min-width: 250px;
-      max-width: 96vw;
-      padding: 22px 12px 16px 12px;
-      position: relative;
-      animation: pop .20s cubic-bezier(.7,-0.06,.49,1.4);
-      transition: box-shadow .16s;
+      background: var(--block); border-radius: 23px; box-shadow: 0 4px 32px #6563ff24;
+      min-width: 245px; max-width: 97vw; padding: 25px 14px 17px 14px; position: relative;
+      animation: pop .21s cubic-bezier(.7,-0.06,.49,1.4); transition: box-shadow .18s;
+      border: 2.5px solid #edeef9;
     }
-    @keyframes pop {
-      from { transform: scale(0.85);}
-      to { transform: scale(1);}
-    }
+    @keyframes pop { from { transform: scale(0.82);} to { transform: scale(1);} }
     .modal-close {
-      position: absolute;
-      top: 13px; right: 17px;
-      background: none;
-      border: none;
-      font-size: 1.36rem;
-      color: #aaa;
-      cursor: pointer;
-      transition: color .12s;
+      position: absolute; top: 13px; right: 19px; background: none; border: none;
+      font-size: 1.28rem; color: #b3b6ce; cursor: pointer; transition: color .11s; z-index: 2; font-weight: bold;
     }
-    .modal-close:hover {
-      color: #fe2c55;
-    }
+    .modal-close:hover { color: var(--main2); }
     .modal-img {
-      width: 104px; height: 128px;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto 10px auto;
-      border-radius: 14px;
-      background: #f6f6f8;
-      box-shadow: 0 2px 10px #ccc2;
+      width: 87px; height: 112px; object-fit: contain; display: block; margin: 0 auto 13px auto;
+      border-radius: 12px; background: #f6f6f8; box-shadow: 0 2px 11px #a5b5dc36;
     }
-    .modal-colors {
-      display: flex;
-      justify-content: center;
-      gap: 9px;
-      margin-bottom: 9px;
-      margin-top: 4px;
+    .modal-colors, .modal-storages, .modal-sims {
+      display: flex; justify-content: center; gap: 16px; margin: 11px 0; flex-wrap: wrap;
     }
     .modal-color {
-      width: 23px; height: 23px;
-      border-radius: 50%;
-      border: 2.5px solid #eee;
-      cursor: pointer;
-      transition: border .13s;
-      box-sizing: border-box;
+      width: 27px; height: 27px; border-radius: 50%; border: 2.5px solid #eee;
+      cursor: pointer; transition: border .15s, box-shadow .14s; box-sizing: border-box;
+      margin-bottom: 2px; box-shadow: 0 1px 7px #aaa2;
     }
-    .modal-color.selected {
-      border: 3px solid #6563ff;
-      box-shadow: 0 2px 6px #6563ff33;
+    .modal-color.selected { border: 3px solid var(--main2); box-shadow: 0 3px 13px #fe2c5542; }
+    .modal-storage {
+      min-width: 57px; padding: 7px 12px; border-radius: 10px; font-size: 1.1rem; background: #f3f4fa;
+      color: var(--main); border: 2.3px solid #e6e7fb; cursor: pointer; font-weight: 700;
+      letter-spacing: 0.01em; transition: border .14s, background .12s, color .13s;
     }
-    .modal-title {
-      font-weight: 600;
-      font-size: 1.07rem;
-      margin-bottom: 7px;
-      text-align: center;
-    }
-    .modal-rating {
-      font-size: 0.98rem;
-      margin-bottom: 4px;
-      text-align: center;
-      color: #666;
-    }
-    .modal-sims {
-      display: flex;
-      justify-content: center;
-      gap: 7px;
-      margin-bottom: 12px;
-    }
+    .modal-storage.selected { border: 2.6px solid var(--main2); background: #fff4f6; color: var(--main2); box-shadow: 0 1px 7px #fe2c5520; }
     .modal-sim {
-      background: #f2f2f6;
-      border-radius: 7px;
-      padding: 5px 9px;
-      font-size: 1.04rem;
-      border: 1.7px solid #e7e7fa;
-      cursor: pointer;
-      transition: border .13s, background .11s, color .11s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      border-radius: 13px; padding: 4px; border: 2.4px solid #e7e8fc; background: #f6f8fb;
+      cursor: pointer; transition: border .14s, box-shadow .13s; box-shadow: 0 1.7px 7px #e3e6f8;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 2px;
     }
-    .modal-sim.selected {
-      border: 2.2px solid #fe2c55;
-      background: #fff4f5;
-      color: #fe2c55;
-    }
+    .modal-sim.selected { border: 2.7px solid var(--main2); background: #fff4f7; box-shadow: 0 2px 9px #fe2c5533; }
     .modal-sim img {
-      width: 20px; height: 20px; object-fit: contain; border-radius: 4px; background: #fafafd;
-      border: 1px solid #eee;
+      width: 40px; height: 40px; object-fit: contain; border-radius: 7px; background: #fafafd;
+      border: none; transition: box-shadow .14s; box-shadow: 0 1.5px 6px #d9dafc;
     }
+    .modal-title { font-weight: 800; font-size: 1.17rem; margin-bottom: 7px; text-align: center; color: #191b24; text-shadow: 0 1px 8px #ced6ff16; letter-spacing: 0.01em; }
+    .modal-rating { font-size: 1.01rem; margin-bottom: 3px; text-align: center; color: #666; font-weight: 600; }
     .modal-continue {
-      display: block;
-      background: linear-gradient(90deg,#6563ff 60%,#fe2c55);
-      color: #fff;
-      border: none;
-      width: 100%;
-      font-size: 1.12rem;
-      padding: 9px 0;
-      border-radius: 13px;
-      margin-top: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #6563ff22;
-      transition: background .14s;
+      display: block; background: linear-gradient(90deg,var(--main) 60%,var(--main2));
+      color: #fff; border: none; width: 100%; font-size: 1.11rem; padding: 11px 0; border-radius: 13px;
+      margin-top: 11px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 9px #6563ff2a;
+      transition: background .13s; letter-spacing: 0.04em;
     }
-    .modal-continue:hover {
-      background: linear-gradient(90deg,#5c8afd 50%,#fe2c55 100%);
-    }
-
-    /* Delivery animation */
+    .modal-continue:active { opacity: 0.89; }
+    /* Delivery animation reworked */
     .delivery-anim-bg {
-      position: fixed;
-      top:0;left:0;right:0;bottom:0;
-      background: rgba(245,247,252,0.98);
-      z-index: 130;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      transition: background .33s;
+      position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(245,247,252,0.98);
+      z-index: 130; display: flex; align-items: center; justify-content: center;
+      transition: background .33s; overflow: hidden;
     }
-    .delivery-phone {
-      position: absolute;
-      left: 50%; bottom: 145px;
-      transform: translateX(-50%);
-      width: 90px; height: 110px;
-      object-fit: contain;
-      z-index: 200;
-      animation: fall 0.7s cubic-bezier(.62,1.1,.52,1) forwards;
-    }
-    @keyframes fall {
-      0% { bottom: 340px; opacity:0.0;}
-      60% { opacity:1;}
-      100% { bottom: 145px; opacity: 1;}
+    .delivery-stage {
+      width: 100vw; height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
+      min-height: 420px;
     }
     .delivery-car-img {
-      width: 178px;
-      height: 80px;
-      position: relative;
-      left: 0; bottom: 0;
-      animation: carMove 1.7s cubic-bezier(.45,1.18,.6,1.05) forwards, carJump 0.32s 0.9s cubic-bezier(.54,.12,.49,1.25);
-      z-index: 210;
-      filter: drop-shadow(0 10px 30px #0c1527cc);
+      position: absolute; left: calc(50% - 140px); top: 50%;
+      width: 230px; height: 110px; transform: translateY(-20px) scale(1.03);
+      z-index: 20;
+      filter: drop-shadow(0 12px 32px #0c1527aa);
+      opacity: 0;
+      animation: car-in 0.7s cubic-bezier(.46,1.4,.61,1) forwards, car-out 0.8s 2s cubic-bezier(.6,1.1,.7,1.3) forwards;
     }
-    @keyframes carMove {
-      0% { transform: translateX(-250px);}
-      88% { transform: translateX(18px);}
-      100% { transform: translateX(0);}
+    @keyframes car-in {
+      0%   { left: -270px; opacity: 0;}
+      45%  { opacity: 1;}
+      100% { left: calc(50% - 140px); opacity: 1;}
     }
-    @keyframes carJump {
-      0% {}
-      13% { transform: translateY(-18px);}
-      25% { transform: translateY(-13px);}
-      100% { transform: translateY(0);}
+    @keyframes car-out {
+      0% { left: calc(50% - 140px); }
+      100% { left: 110vw;}
+    }
+    .delivery-phone {
+      position: absolute; left: 50%; top: 30vh;
+      width: 85px; height: 110px; z-index: 31;
+      transform: translate(-50%, -75vh) scale(1.13);
+      opacity: 0;
+      animation: phone-fall 1.2s 0.6s cubic-bezier(.2,1.4,.6,1) forwards, phone-out 0.55s 2.05s cubic-bezier(.4,1.2,.9,1.1) forwards;
+    }
+    @keyframes phone-fall {
+      0%   { transform: translate(-50%, -75vh) scale(1.13); opacity: 0;}
+      40%  { opacity: 1;}
+      88%  { transform: translate(-50%, 7vh) scale(1.03);}
+      100% { transform: translate(-50%, 34px) scale(1);}
+    }
+    @keyframes phone-out {
+      0% { opacity:1; }
+      100% { opacity:0; transform: translate(-50%, 34px) scale(1);}
+    }
+    .delivery-check {
+      position: absolute; left: 50%; top: 39vh; transform: translate(-50%,-50%) scale(0.2);
+      background: #42d57d; border-radius: 50%; width: 62px; height: 62px; box-shadow: 0 2px 18px #13ac4845;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.3rem; color: #fff; z-index: 100; opacity: 0;
+      animation: showCheck 0.33s 2.27s cubic-bezier(.47,2.1,.5,1) forwards;
+    }
+    @keyframes showCheck {
+      0% { opacity:0; transform: translate(-50%,-50%) scale(0.5);}
+      80% { opacity:.7; }
+      100% { opacity:1; transform: translate(-50%,-50%) scale(1);}
     }
     .delivery-label {
-      font-size: 1.22rem;
-      color: #3e4b88;
-      text-align: center;
-      margin-top: 24px;
-      font-weight: bold;
-      width: 100%;
-      animation: showMsg .7s .85s both;
+      font-size: 1.25rem; color: #2d3ea3; text-align: center; font-weight: bold;
+      width: 100%; letter-spacing: 0.01em; position: absolute; left: 0; right: 0; top: 65vh;
+      opacity: 0; animation: showLabel 0.34s 2.36s both; text-shadow: 0 1.5px 8px #b6bffc13;
     }
-    @keyframes showMsg {
-      from { opacity: 0; transform: scale(.97);}
-      to { opacity: 1; transform: scale(1);}
-    }
-    @media (max-width: 800px) {
-      .main-list {max-width: 99vw;}
-    }
-    @media (max-width: 600px) {
-      .main-list {gap: 13px;}
-      .card {width: 96vw; max-width: 240px;}
-      .modal {max-width:98vw;}
-      .delivery-phone {width:64vw;max-width:110px;height:auto;}
-      .delivery-car-img {width:84vw;max-width:160px;}
-    }
-    @media (max-width: 400px) {
-      .main-list {gap: 9px;}
-      .card {min-height: 210px;}
-      .delivery-phone {width:88vw;}
-      .delivery-car-img {width:98vw;}
+    @keyframes showLabel { 0% { opacity:0; transform:translateY(10px);} 100% { opacity:1; transform:translateY(0);} }
+    @media (max-width: 700px) {
+      .delivery-car-img { width: 48vw; min-width: 150px; left: calc(50% - 24vw);}
+      .delivery-phone { width: 16vw; min-width: 65px;}
     }
   </style>
 </head>
 <body>
   <div class="header">
+    <span class="logo">Phone Candy</span>
     <div class="search-bar">
-      <input type="text" id="search" placeholder="Search...">
+      <input type="text" id="search" placeholder="Search for phone...">
     </div>
   </div>
   <div class="main-list" id="main-list"></div>
@@ -362,130 +243,89 @@
   <div id="modal-bg" class="modal-bg hidden"></div>
   <div id="delivery-bg" class="delivery-anim-bg hidden"></div>
   <script>
-    // SIM icon links
+    // SIM icons
     const simIconsArr = [
       "https://i.ibb.co/S42CDLr4/123.png",
       "https://i.ibb.co/qMStyHkS/12321332.png",
       "https://i.ibb.co/ZpkDqBWf/112344.png"
     ];
-    // Phone list (разносим симки и цвета)
+    // Phones
     const phones = [
-      {
-        title: "iPhone 16 Pro",
-        desc: "1TB",
-        rating: 4.8,
+      { title: "iPhone 16 Pro", desc: "Apple flagship", rating: 4.8,
         img: "https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp",
         colors: [
           {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
           {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
           {name:"White Titanium", url:"https://i.ibb.co/r2m0tP1j/white-titanium.webp", hex:"#f9f9f9"},
         ],
-        sims: [
-          { label: "Physical + eSIM", icon: 0 },
-          { label: "Dual eSIM", icon: 1 },
-          { label: "Physical SIM", icon: 2 }
-        ]
+        storages: ["256GB", "512GB", "1TB"]
       },
-      {
-        title: "iPhone 16",
-        desc: "256GB",
-        rating: 4.4,
+      { title: "iPhone 16", desc: "Apple, compact", rating: 4.4,
         img: "https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp",
         colors: [
           {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
           {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
         ],
-        sims: [
-          { label: "eSIM", icon: 1 },
-          { label: "Physical SIM", icon: 2 }
-        ]
+        storages: ["128GB", "256GB", "512GB"]
       },
-      {
-        title: "15 Pro Max",
-        desc: "256GB",
-        rating: 4.5,
+      { title: "15 Pro Max", desc: "Apple, premium", rating: 4.5,
         img: "https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp",
         colors: [
           {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
           {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
         ],
-        sims: [
-          { label: "Physical SIM", icon: 2 },
-          { label: "eSIM", icon: 1 }
-        ]
+        storages: ["256GB", "512GB"]
       },
-      {
-        title: "iPhone 14",
-        desc: "128GB",
-        rating: 3.8,
+      { title: "iPhone 14", desc: "Apple, compact", rating: 3.8,
         img: "https://i.ibb.co/r2m0tP1j/white-titanium.webp",
         colors: [
           {name:"White Titanium", url:"https://i.ibb.co/r2m0tP1j/white-titanium.webp", hex:"#f9f9f9"},
         ],
-        sims: [
-          { label: "Physical SIM", icon: 2 }
-        ]
+        storages: ["128GB", "256GB"]
       },
-      {
-        title: "Samsung Galaxy S25",
-        desc: "12/512GB",
-        rating: 4.6,
+      { title: "Samsung Galaxy S25", desc: "Silver Shadow, 2025", rating: 4.6,
         img: "https://i.ibb.co/RTPKzfsV/smartfon-samsung-galaxy-s25-12-512gb-silver-shadow-sm-s931bzsheuc-4ec170bd-d08d-457a-a944-e5596e9709.webp",
         colors: [
           {name:"Silver Shadow", url:"https://i.ibb.co/RTPKzfsV/smartfon-samsung-galaxy-s25-12-512gb-silver-shadow-sm-s931bzsheuc-4ec170bd-d08d-457a-a944-e5596e9709.webp", hex:"#ccd3db"},
           {name:"Black", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#2e2e2e"}
         ],
-        sims: [
-          { label: "Dual eSIM", icon: 1 },
-          { label: "Physical SIM", icon: 2 }
-        ]
+        storages: ["256GB", "512GB", "1TB"]
       },
-      {
-        title: "Vertu Metavertu 2",
-        desc: "Web3 AI Phone 512GB",
-        rating: 4.9,
+      { title: "Vertu Metavertu 2", desc: "Web3 AI Phone", rating: 4.9,
         img: "https://i.ibb.co/ccDD5vLz/vertu-metavertu-2-calfskin-web3-ai-phone-512gb-white-f0a5af07-dc38-4fa6-bbd0-ec93e6b6db4e-3-png.webp",
         colors: [
           {name:"White Calfskin", url:"https://i.ibb.co/ccDD5vLz/vertu-metavertu-2-calfskin-web3-ai-phone-512gb-white-f0a5af07-dc38-4fa6-bbd0-ec93e6b6db4e-3-png.webp", hex:"#fafafa"}
         ],
-        sims: [
-          { label: "Physical SIM", icon: 2 }
-        ]
+        storages: ["512GB"]
       },
-      {
-        title: "iPhone 16 Pro Max",
-        desc: "512GB Blue Titanium",
-        rating: 4.7,
+      { title: "iPhone 16 Pro Max", desc: "Blue Titanium", rating: 4.7,
         img: "https://i.ibb.co/Zz1YyBNH/iphone-16-pro-max-512-gb-blue-titanium-5-png.webp",
         colors: [
           {name:"Blue Titanium", url:"https://i.ibb.co/Zz1YyBNH/iphone-16-pro-max-512-gb-blue-titanium-5-png.webp", hex:"#668caa"},
           {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#232527"}
         ],
-        sims: [
-          { label: "Physical + eSIM", icon: 0 },
-          { label: "eSIM", icon: 1 }
-        ]
+        storages: ["256GB", "512GB", "1TB"]
       }
     ];
-
+    // Helper — всегда все симки для всех телефонов
+    function simIcons() {
+      return simIconsArr.map(url =>
+        `<img class="sim-icon-img" src="${url}" alt="SIM">`
+      ).join('');
+    }
     function starRow(r) {
       let full = Math.floor(r), half = r%1>=0.5, html = '';
       for (let i=0;i<full;i++) html+='<span class="star">★</span>';
       if (half) html+='<span class="star" style="color:#ccc">★</span>';
-      html+=`<span style="color:#222;font-weight:600;margin-left:4px;font-size:0.97em;">${r.toFixed(1)}</span>`;
+      html+=`<span style="color:#222;font-weight:700;margin-left:3px;font-size:0.99em;">${r.toFixed(1)}</span>`;
       return html;
-    }
-    function simIcons(sims) {
-      return sims.map((s,i)=>
-        `<img class="sim-icon-img" title="${s.label}" src="${simIconsArr[s.icon]}" alt="${s.label}">`
-      ).join('');
     }
     function renderList(arr) {
       const list = document.getElementById('main-list');
       list.innerHTML = '';
       arr.forEach((p,idx)=>{
         list.innerHTML += `
-          <div class="card" data-idx="${idx}" tabindex="0" aria-label="Подробнее о ${p.title}">
+          <div class="card" data-idx="${idx}" tabindex="0" aria-label="More info: ${p.title}">
             <img class="card-img" src="${p.img}" alt="">
             <div class="color-dots">
               ${p.colors.map(c=>`<span class="color-dot" style="background:${c.hex};"></span>`).join('')}
@@ -493,7 +333,7 @@
             <div class="card-title">${p.title}</div>
             <div class="card-desc">${p.desc}</div>
             <div class="card-stars">${starRow(p.rating)}</div>
-            <div class="sim-icons">${simIcons(p.sims)}</div>
+            <div class="sim-icons">${simIcons()}</div>
           </div>
         `;
       });
@@ -512,7 +352,7 @@
 
     let modalBg = document.getElementById('modal-bg');
     let deliveryBg = document.getElementById('delivery-bg');
-    let selectedPhone = null, selectedColor = 0, selectedSim = 0;
+    let selectedPhone = null, selectedColor = 0, selectedSim = 0, selectedStorage = 0;
 
     document.body.addEventListener('click', function(e){
       let card = e.target.closest('.card');
@@ -526,31 +366,36 @@
       selectedPhone = phones[idx];
       selectedColor = 0;
       selectedSim = 0;
+      selectedStorage = 0;
       modalBg.innerHTML = `
         <div class="modal" role="dialog" aria-modal="true">
-          <button class="modal-close" aria-label="Закрыть">&times;</button>
+          <button class="modal-close" aria-label="Close">&times;</button>
           <img src="${selectedPhone.colors[0].url}" class="modal-img" id="modal-img" alt="">
           <div class="modal-colors">
             ${selectedPhone.colors.map((c,i)=>
               `<span class="modal-color${i==0?' selected':''}" data-i="${i}" title="${c.name}" style="background:${c.hex}"></span>`
             ).join('')}
           </div>
-          <div class="modal-title">${selectedPhone.title} <span style="color:#888;font-weight:400;font-size:0.97em">${selectedPhone.desc}</span></div>
-          <div class="modal-rating">★ ${selectedPhone.rating}</div>
+          <div class="modal-storages">
+            ${selectedPhone.storages.map((s,i)=>
+              `<span class="modal-storage${i==0?' selected':''}" data-i="${i}">${s}</span>`
+            ).join('')}
+          </div>
           <div class="modal-sims">
-            ${selectedPhone.sims.map((s,i)=>`
+            ${simIconsArr.map((url,i)=>`
               <span class="modal-sim${i==0?' selected':''}" data-i="${i}">
-                <img src="${simIconsArr[s.icon]}" alt="${s.label}"> ${s.label}
+                <img src="${url}" alt="SIM">
               </span>
             `).join('')}
           </div>
-          <button class="modal-continue">Продолжить</button>
+          <div class="modal-title">${selectedPhone.title}</div>
+          <div class="modal-rating">★ ${selectedPhone.rating}</div>
+          <button class="modal-continue">Continue</button>
         </div>
       `;
       modalBg.classList.remove('hidden');
       modalBg.classList.add('modal-bg-open');
 
-      // Color select
       modalBg.querySelectorAll('.modal-color').forEach(c=>{
         c.onclick = function(){
           modalBg.querySelectorAll('.modal-color').forEach(el=>el.classList.remove('selected'));
@@ -559,7 +404,13 @@
           modalBg.querySelector('#modal-img').src = selectedPhone.colors[selectedColor].url;
         }
       });
-      // Sim select
+      modalBg.querySelectorAll('.modal-storage').forEach(s=>{
+        s.onclick = function(){
+          modalBg.querySelectorAll('.modal-storage').forEach(el=>el.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedStorage = +this.dataset.i;
+        }
+      });
       modalBg.querySelectorAll('.modal-sim').forEach(s=>{
         s.onclick = function(){
           modalBg.querySelectorAll('.modal-sim').forEach(el=>el.classList.remove('selected'));
@@ -567,18 +418,15 @@
           selectedSim = +this.dataset.i;
         }
       });
-      // Close
       modalBg.querySelector('.modal-close').onclick = ()=>{
         modalBg.classList.add('hidden');
         modalBg.classList.remove('modal-bg-open');
       };
-      // Continue
       modalBg.querySelector('.modal-continue').onclick = ()=>{
         modalBg.classList.add('hidden');
         modalBg.classList.remove('modal-bg-open');
         startDeliveryAnim(selectedPhone.colors[selectedColor].url);
       };
-      // ESC
       document.onkeydown = function(evt){
         if (evt.key === "Escape") {
           modalBg.classList.add('hidden');
@@ -589,20 +437,40 @@
 
     function startDeliveryAnim(phoneImg) {
       deliveryBg.innerHTML = `
-        <img src="${phoneImg}" class="delivery-phone" id="animPhone" alt="">
-        <img src="https://i.ibb.co/6cP27vRs/5875918.png" class="delivery-car-img" id="car-img" alt="машина">
-        <div class="delivery-label" id="delivery-label" style="opacity:0;">Товар уже в пути 🚚</div>
+        <div class="delivery-stage">
+          <img src="https://i.ibb.co/6cP27vRs/5875918.png" class="delivery-car-img" id="car-img" alt="truck">
+          <img src="${phoneImg}" class="delivery-phone" id="animPhone" alt="">
+          <div class="delivery-check" id="delivery-check">
+            <svg width="36" height="36" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="none"/><path d="M8.5 18l5 5 10-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="delivery-label" id="delivery-label">Item on the way! 🚚</div>
+        </div>
       `;
       deliveryBg.classList.remove('hidden');
-      setTimeout(()=>{ document.getElementById('delivery-label').style.opacity = 1; }, 1200);
-      setTimeout(()=>{ deliveryBg.classList.add('hidden'); }, 2900);
+      document.getElementById('delivery-check').style.opacity = 0;
+      document.getElementById('delivery-label').style.opacity = 0;
+      setTimeout(()=>{
+        document.getElementById('delivery-check').style.opacity = 1;
+        document.getElementById('delivery-label').style.opacity = 1;
+      }, 2350);
+      setTimeout(()=>{ deliveryBg.classList.add('hidden'); }, 3500);
     }
 
+    // Багфикс: если overlay вдруг застрял, автоскрытие через 3 сек после загрузки
+    window.addEventListener('DOMContentLoaded',()=>{
+      setTimeout(()=>{
+        if (!modalBg.classList.contains('hidden')) modalBg.classList.add('hidden');
+        if (!deliveryBg.classList.contains('hidden')) deliveryBg.classList.add('hidden');
+      },3000);
+    });
     window.addEventListener('keydown', function(evt) {
       if (evt.key === "Escape") {
         if (!modalBg.classList.contains('hidden')) {
           modalBg.classList.add('hidden');
           modalBg.classList.remove('modal-bg-open');
+        }
+        if (!deliveryBg.classList.contains('hidden')) {
+          deliveryBg.classList.add('hidden');
         }
       }
     });
