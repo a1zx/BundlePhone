@@ -5,17 +5,21 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Магазин телефонов</title>
   <style>
-    body {
+    html, body {
+      height: 100%;
+      background: #f7f7fb;
       margin: 0;
-      background: #f5f6fa;
+      padding: 0;
       font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
       color: #222;
     }
+    .hidden { display: none !important; }
+
     .header {
       position: sticky;
       top: 0;
       background: #fff;
-      padding: 12px 18px 8px 18px;
+      padding: 13px 18px 8px 18px;
       z-index: 10;
       box-shadow: 0 2px 10px #0001;
       display: flex;
@@ -37,40 +41,46 @@
       font-size: 1.07rem;
       width: 100%;
       padding: 4px;
+      background: none;
+      color: #222;
     }
     .main-list {
-      padding: 10px 0 64px 0;
+      padding: 16px 0 64px 0;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 18px;
       justify-content: center;
-      max-width: 500px;
+      max-width: 700px;
       margin: 0 auto;
     }
     .card {
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 2px 10px #0001;
-      padding: 12px;
-      width: 200px;
+      padding: 16px 12px 13px 12px;
+      width: 210px;
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       position: relative;
-      transition: box-shadow .15s;
+      transition: box-shadow .15s, transform .13s;
+      user-select: none;
+      min-height: 250px;
     }
     .card:hover {
-      box-shadow: 0 6px 24px #0002;
-      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 7px 28px #6563ff22;
+      transform: translateY(-2px) scale(1.017);
     }
     .card-img {
-      width: 90px;
-      height: 120px;
+      width: 94px;
+      height: 122px;
       object-fit: contain;
       border-radius: 12px;
-      background: #fafbfc;
+      background: #f3f5fa;
       margin-bottom: 7px;
+      transition: filter .13s;
+      filter: drop-shadow(0 4px 12px #8881);
     }
     .color-dots {
       margin: 4px 0 8px 0;
@@ -78,64 +88,67 @@
       gap: 7px;
     }
     .color-dot {
-      width: 11px; height: 11px;
+      width: 13px; height: 13px;
       border-radius: 50%;
       border: 2px solid #eee;
     }
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       font-weight: 600;
-      margin: 2px 0 1px 0;
+      margin: 2px 0 0 0;
       text-align: center;
+      letter-spacing: .2px;
     }
     .card-desc {
       font-size: 0.93rem;
-      color: #555;
+      color: #666;
       text-align: center;
       margin-bottom: 3px;
+      margin-top: 1px;
     }
     .card-stars {
       display: flex;
       align-items: center;
       gap: 3px;
       margin-bottom: 3px;
+      font-size: 0.99em;
     }
     .star {
       color: gold;
-      font-size: 1.07rem;
-      margin-right: 2px;
+      font-size: 1.09rem;
+      margin-right: 1.5px;
+      filter: drop-shadow(0 1px 1px #fe2c5512);
     }
     .sim-icons {
       display: flex;
-      gap: 3px;
+      gap: 5px;
       margin-bottom: 2px;
+      margin-top: 2px;
+      justify-content: center;
     }
-    .sim-icon {
-      font-size: 1.12rem;
-      padding: 2px 5px;
-      border-radius: 8px;
-      background: #f1f1f7;
-      margin-right: 1px;
-      border: 1px solid #eee;
-      color: #6563ff;
+    .sim-icon-img {
+      width: 23px; height: 23px; background: #f3f4fa; border-radius: 6px;
+      padding: 2px; border: 1.2px solid #eee;
+      object-fit: contain;
+      box-shadow: 0 1px 3px #e4e6f8;
     }
     .footer {
       position: fixed;
       bottom: 0; left: 0; right: 0;
       background: #fff;
       box-shadow: 0 -1px 8px #0001;
-      height: 54px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 20;
     }
     .bell {
-      width: 28px; height: 28px;
-      opacity: 0.7;
+      width: 26px; height: 26px;
+      opacity: 0.67;
     }
 
-    /* Модалка */
+    /* Modal */
     .modal-bg {
       position: fixed;
       top:0;left:0;right:0;bottom:0;
@@ -144,45 +157,54 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background .21s;
     }
     .modal {
       background: #fff;
       border-radius: 22px;
-      box-shadow: 0 2px 30px #0002;
+      box-shadow: 0 2px 30px #0003;
       min-width: 250px;
-      max-width: 95vw;
+      max-width: 96vw;
       padding: 22px 12px 16px 12px;
       position: relative;
-      animation: pop .19s cubic-bezier(.7,-0.06,.49,1.4);
+      animation: pop .20s cubic-bezier(.7,-0.06,.49,1.4);
+      transition: box-shadow .16s;
     }
     @keyframes pop {
-      from { transform: scale(0.82);}
+      from { transform: scale(0.85);}
       to { transform: scale(1);}
     }
     .modal-close {
       position: absolute;
-      top: 14px; right: 16px;
+      top: 13px; right: 17px;
       background: none;
       border: none;
-      font-size: 1.3rem;
+      font-size: 1.36rem;
       color: #aaa;
       cursor: pointer;
+      transition: color .12s;
+    }
+    .modal-close:hover {
+      color: #fe2c55;
     }
     .modal-img {
-      width: 100px; height: 120px;
+      width: 104px; height: 128px;
       object-fit: contain;
       display: block;
       margin: 0 auto 10px auto;
+      border-radius: 14px;
+      background: #f6f6f8;
+      box-shadow: 0 2px 10px #ccc2;
     }
     .modal-colors {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      gap: 9px;
       margin-bottom: 9px;
       margin-top: 4px;
     }
     .modal-color {
-      width: 22px; height: 22px;
+      width: 23px; height: 23px;
       border-radius: 50%;
       border: 2.5px solid #eee;
       cursor: pointer;
@@ -195,13 +217,13 @@
     }
     .modal-title {
       font-weight: 600;
-      font-size: 1.08rem;
-      margin-bottom: 6px;
+      font-size: 1.07rem;
+      margin-bottom: 7px;
       text-align: center;
     }
     .modal-rating {
       font-size: 0.98rem;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       text-align: center;
       color: #666;
     }
@@ -209,22 +231,28 @@
       display: flex;
       justify-content: center;
       gap: 7px;
-      margin-bottom: 11px;
+      margin-bottom: 12px;
     }
     .modal-sim {
       background: #f2f2f6;
       border-radius: 7px;
       padding: 5px 9px;
       font-size: 1.04rem;
-      color: #6563ff;
       border: 1.7px solid #e7e7fa;
       cursor: pointer;
-      transition: border .13s;
+      transition: border .13s, background .11s, color .11s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .modal-sim.selected {
-      border: 2.3px solid #fe2c55;
+      border: 2.2px solid #fe2c55;
       background: #fff4f5;
       color: #fe2c55;
+    }
+    .modal-sim img {
+      width: 20px; height: 20px; object-fit: contain; border-radius: 4px; background: #fafafd;
+      border: 1px solid #eee;
     }
     .modal-continue {
       display: block;
@@ -232,20 +260,24 @@
       color: #fff;
       border: none;
       width: 100%;
-      font-size: 1.11rem;
+      font-size: 1.12rem;
       padding: 9px 0;
       border-radius: 13px;
       margin-top: 10px;
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 2px 8px #6563ff22;
+      transition: background .14s;
+    }
+    .modal-continue:hover {
+      background: linear-gradient(90deg,#5c8afd 50%,#fe2c55 100%);
     }
 
-    /* Анимация: телефон в машину */
+    /* Delivery animation */
     .delivery-anim-bg {
       position: fixed;
       top:0;left:0;right:0;bottom:0;
-      background: rgba(240,240,245,0.95);
+      background: rgba(245,247,252,0.98);
       z-index: 130;
       display: flex;
       align-items: flex-end;
@@ -254,65 +286,66 @@
     }
     .delivery-phone {
       position: absolute;
-      left: 50%; bottom: 130px;
+      left: 50%; bottom: 145px;
       transform: translateX(-50%);
       width: 90px; height: 110px;
       object-fit: contain;
       z-index: 200;
-      animation: fall 0.6s cubic-bezier(.6,1.3,.5,1) forwards;
+      animation: fall 0.7s cubic-bezier(.62,1.1,.52,1) forwards;
     }
     @keyframes fall {
-      0% { bottom: 360px; opacity:0.0;}
-      50% { opacity:1;}
-      100% { bottom: 130px; opacity: 1;}
+      0% { bottom: 340px; opacity:0.0;}
+      60% { opacity:1;}
+      100% { bottom: 145px; opacity: 1;}
     }
-    .delivery-car {
-      width: 170px; height: 78px;
-      background: #2c2c43;
-      border-radius: 30px 45px 25px 25px/38px 43px 18px 18px;
-      margin-bottom: 33px;
+    .delivery-car-img {
+      width: 178px;
+      height: 80px;
       position: relative;
-      box-shadow: 0 8px 30px #0c1527cc;
-      animation: moveCar 1.8s cubic-bezier(.45,1.2,.6,1.05) forwards;
+      left: 0; bottom: 0;
+      animation: carMove 1.7s cubic-bezier(.45,1.18,.6,1.05) forwards, carJump 0.32s 0.9s cubic-bezier(.54,.12,.49,1.25);
+      z-index: 210;
+      filter: drop-shadow(0 10px 30px #0c1527cc);
     }
-    @keyframes moveCar {
-      0% { transform: translateX(-220px);}
-      90% { transform: translateX(14px);}
+    @keyframes carMove {
+      0% { transform: translateX(-250px);}
+      88% { transform: translateX(18px);}
       100% { transform: translateX(0);}
     }
-    .wheel {
-      position: absolute;
-      bottom: -18px;
-      width: 34px; height: 34px;
-      background: #222;
-      border-radius: 50%;
-      left: 16px;
-      box-shadow: 0 2px 4px #3333;
-      border: 6px solid #6a8bba;
-    }
-    .wheel2 {
-      left: 110px;
+    @keyframes carJump {
+      0% {}
+      13% { transform: translateY(-18px);}
+      25% { transform: translateY(-13px);}
+      100% { transform: translateY(0);}
     }
     .delivery-label {
-      font-size: 1.25rem;
+      font-size: 1.22rem;
       color: #3e4b88;
       text-align: center;
-      margin-top: 22px;
+      margin-top: 24px;
       font-weight: bold;
       width: 100%;
-      animation: showMsg .7s .9s both;
+      animation: showMsg .7s .85s both;
     }
     @keyframes showMsg {
-      from { opacity: 0; transform: scale(.95);}
+      from { opacity: 0; transform: scale(.97);}
       to { opacity: 1; transform: scale(1);}
     }
-    @media (max-width: 550px) {
-      .main-list {max-width: 98vw;}
-      .card {width: 98vw; max-width: 220px;}
+    @media (max-width: 800px) {
+      .main-list {max-width: 99vw;}
+    }
+    @media (max-width: 600px) {
+      .main-list {gap: 13px;}
+      .card {width: 96vw; max-width: 240px;}
       .modal {max-width:98vw;}
-      .delivery-phone {width:60vw;max-width:120px;height:auto;}
-      .delivery-car {width:110vw;max-width:190px;height:auto;}
-      .wheel, .wheel2 {width:23px;height:23px;}
+      .delivery-phone {width:64vw;max-width:110px;height:auto;}
+      .delivery-car-img {width:84vw;max-width:160px;}
+    }
+    @media (max-width: 400px) {
+      .main-list {gap: 9px;}
+      .card {min-height: 210px;}
+      .delivery-phone {width:88vw;}
+      .delivery-car-img {width:98vw;}
     }
   </style>
 </head>
@@ -326,13 +359,16 @@
   <div class="footer">
     <svg class="bell" fill="none" viewBox="0 0 24 24"><path d="M14 19.5A2 2 0 0 1 12 21.5a2 2 0 0 1-2-2" stroke="#222" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 8A6.5 6.5 0 1 1 18.5 8c0 7-2.5 9-6.5 9S5.5 15 5.5 8Z" stroke="#222" stroke-width="1.5"/></svg>
   </div>
-
-  <!-- Modal, delivery animation here -->
   <div id="modal-bg" class="modal-bg hidden"></div>
   <div id="delivery-bg" class="delivery-anim-bg hidden"></div>
-
   <script>
-    // Данные телефонов
+    // SIM icon links
+    const simIconsArr = [
+      "https://i.ibb.co/S42CDLr4/123.png",
+      "https://i.ibb.co/qMStyHkS/12321332.png",
+      "https://i.ibb.co/ZpkDqBWf/112344.png"
+    ];
+    // Phone list (разносим симки и цвета)
     const phones = [
       {
         title: "iPhone 16 Pro",
@@ -344,7 +380,11 @@
           {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
           {name:"White Titanium", url:"https://i.ibb.co/r2m0tP1j/white-titanium.webp", hex:"#f9f9f9"},
         ],
-        sims: ["Physical + eSIM", "Dual eSIM", "Physical SIM"],
+        sims: [
+          { label: "Physical + eSIM", icon: 0 },
+          { label: "Dual eSIM", icon: 1 },
+          { label: "Physical SIM", icon: 2 }
+        ]
       },
       {
         title: "iPhone 16",
@@ -355,7 +395,10 @@
           {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
           {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
         ],
-        sims: ["eSIM", "Physical SIM"],
+        sims: [
+          { label: "eSIM", icon: 1 },
+          { label: "Physical SIM", icon: 2 }
+        ]
       },
       {
         title: "15 Pro Max",
@@ -366,7 +409,10 @@
           {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
           {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
         ],
-        sims: ["Physical SIM", "eSIM"],
+        sims: [
+          { label: "Physical SIM", icon: 2 },
+          { label: "eSIM", icon: 1 }
+        ]
       },
       {
         title: "iPhone 14",
@@ -376,29 +422,70 @@
         colors: [
           {name:"White Titanium", url:"https://i.ibb.co/r2m0tP1j/white-titanium.webp", hex:"#f9f9f9"},
         ],
-        sims: ["Physical SIM"],
+        sims: [
+          { label: "Physical SIM", icon: 2 }
+        ]
       },
+      {
+        title: "Samsung Galaxy S25",
+        desc: "12/512GB",
+        rating: 4.6,
+        img: "https://i.ibb.co/RTPKzfsV/smartfon-samsung-galaxy-s25-12-512gb-silver-shadow-sm-s931bzsheuc-4ec170bd-d08d-457a-a944-e5596e9709.webp",
+        colors: [
+          {name:"Silver Shadow", url:"https://i.ibb.co/RTPKzfsV/smartfon-samsung-galaxy-s25-12-512gb-silver-shadow-sm-s931bzsheuc-4ec170bd-d08d-457a-a944-e5596e9709.webp", hex:"#ccd3db"},
+          {name:"Black", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#2e2e2e"}
+        ],
+        sims: [
+          { label: "Dual eSIM", icon: 1 },
+          { label: "Physical SIM", icon: 2 }
+        ]
+      },
+      {
+        title: "Vertu Metavertu 2",
+        desc: "Web3 AI Phone 512GB",
+        rating: 4.9,
+        img: "https://i.ibb.co/ccDD5vLz/vertu-metavertu-2-calfskin-web3-ai-phone-512gb-white-f0a5af07-dc38-4fa6-bbd0-ec93e6b6db4e-3-png.webp",
+        colors: [
+          {name:"White Calfskin", url:"https://i.ibb.co/ccDD5vLz/vertu-metavertu-2-calfskin-web3-ai-phone-512gb-white-f0a5af07-dc38-4fa6-bbd0-ec93e6b6db4e-3-png.webp", hex:"#fafafa"}
+        ],
+        sims: [
+          { label: "Physical SIM", icon: 2 }
+        ]
+      },
+      {
+        title: "iPhone 16 Pro Max",
+        desc: "512GB Blue Titanium",
+        rating: 4.7,
+        img: "https://i.ibb.co/Zz1YyBNH/iphone-16-pro-max-512-gb-blue-titanium-5-png.webp",
+        colors: [
+          {name:"Blue Titanium", url:"https://i.ibb.co/Zz1YyBNH/iphone-16-pro-max-512-gb-blue-titanium-5-png.webp", hex:"#668caa"},
+          {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#232527"}
+        ],
+        sims: [
+          { label: "Physical + eSIM", icon: 0 },
+          { label: "eSIM", icon: 1 }
+        ]
+      }
     ];
 
-    // --- helpers ---
     function starRow(r) {
       let full = Math.floor(r), half = r%1>=0.5, html = '';
       for (let i=0;i<full;i++) html+='<span class="star">★</span>';
       if (half) html+='<span class="star" style="color:#ccc">★</span>';
-      html+=`<span style="color:#222;font-weight:600;margin-left:4px;">${r.toFixed(1)}</span>`;
+      html+=`<span style="color:#222;font-weight:600;margin-left:4px;font-size:0.97em;">${r.toFixed(1)}</span>`;
       return html;
     }
     function simIcons(sims) {
-      return sims.map((s,i)=>`<span class="sim-icon" title="${s}">${s.includes("eSIM")?"📶":"💳"}</span>`).join('');
+      return sims.map((s,i)=>
+        `<img class="sim-icon-img" title="${s.label}" src="${simIconsArr[s.icon]}" alt="${s.label}">`
+      ).join('');
     }
-
-    // --- render main list ---
     function renderList(arr) {
       const list = document.getElementById('main-list');
       list.innerHTML = '';
       arr.forEach((p,idx)=>{
         list.innerHTML += `
-          <div class="card" data-idx="${idx}">
+          <div class="card" data-idx="${idx}" tabindex="0" aria-label="Подробнее о ${p.title}">
             <img class="card-img" src="${p.img}" alt="">
             <div class="color-dots">
               ${p.colors.map(c=>`<span class="color-dot" style="background:${c.hex};"></span>`).join('')}
@@ -413,7 +500,6 @@
     }
     renderList(phones);
 
-    // --- Search logic ---
     document.getElementById('search').addEventListener('input', function(){
       const val = this.value.trim().toLowerCase();
       renderList(
@@ -424,7 +510,6 @@
       );
     });
 
-    // --- Modal logic ---
     let modalBg = document.getElementById('modal-bg');
     let deliveryBg = document.getElementById('delivery-bg');
     let selectedPhone = null, selectedColor = 0, selectedSim = 0;
@@ -442,8 +527,8 @@
       selectedColor = 0;
       selectedSim = 0;
       modalBg.innerHTML = `
-        <div class="modal">
-          <button class="modal-close">&times;</button>
+        <div class="modal" role="dialog" aria-modal="true">
+          <button class="modal-close" aria-label="Закрыть">&times;</button>
           <img src="${selectedPhone.colors[0].url}" class="modal-img" id="modal-img" alt="">
           <div class="modal-colors">
             ${selectedPhone.colors.map((c,i)=>
@@ -454,7 +539,9 @@
           <div class="modal-rating">★ ${selectedPhone.rating}</div>
           <div class="modal-sims">
             ${selectedPhone.sims.map((s,i)=>`
-              <span class="modal-sim${i==0?' selected':''}" data-i="${i}">${s}</span>
+              <span class="modal-sim${i==0?' selected':''}" data-i="${i}">
+                <img src="${simIconsArr[s.icon]}" alt="${s.label}"> ${s.label}
+              </span>
             `).join('')}
           </div>
           <button class="modal-continue">Продолжить</button>
@@ -481,32 +568,44 @@
         }
       });
       // Close
-      modalBg.querySelector('.modal-close').onclick = ()=>{modalBg.classList.add('hidden'); modalBg.classList.remove('modal-bg-open')};
+      modalBg.querySelector('.modal-close').onclick = ()=>{
+        modalBg.classList.add('hidden');
+        modalBg.classList.remove('modal-bg-open');
+      };
       // Continue
       modalBg.querySelector('.modal-continue').onclick = ()=>{
-        modalBg.classList.add('hidden'); modalBg.classList.remove('modal-bg-open');
+        modalBg.classList.add('hidden');
+        modalBg.classList.remove('modal-bg-open');
         startDeliveryAnim(selectedPhone.colors[selectedColor].url);
       };
+      // ESC
+      document.onkeydown = function(evt){
+        if (evt.key === "Escape") {
+          modalBg.classList.add('hidden');
+          modalBg.classList.remove('modal-bg-open');
+        }
+      }
     }
 
-    // --- Delivery animation ---
     function startDeliveryAnim(phoneImg) {
       deliveryBg.innerHTML = `
-        <img src="${phoneImg}" class="delivery-phone" id="animPhone">
-        <div class="delivery-car">
-          <div class="wheel"></div>
-          <div class="wheel wheel2"></div>
-        </div>
+        <img src="${phoneImg}" class="delivery-phone" id="animPhone" alt="">
+        <img src="https://i.ibb.co/6cP27vRs/5875918.png" class="delivery-car-img" id="car-img" alt="машина">
         <div class="delivery-label" id="delivery-label" style="opacity:0;">Товар уже в пути 🚚</div>
       `;
       deliveryBg.classList.remove('hidden');
-      setTimeout(()=>{
-        document.getElementById('delivery-label').style.opacity = 1;
-      }, 1100);
-      setTimeout(()=>{
-        deliveryBg.classList.add('hidden');
-      }, 3000);
+      setTimeout(()=>{ document.getElementById('delivery-label').style.opacity = 1; }, 1200);
+      setTimeout(()=>{ deliveryBg.classList.add('hidden'); }, 2900);
     }
+
+    window.addEventListener('keydown', function(evt) {
+      if (evt.key === "Escape") {
+        if (!modalBg.classList.contains('hidden')) {
+          modalBg.classList.add('hidden');
+          modalBg.classList.remove('modal-bg-open');
+        }
+      }
+    });
   </script>
 </body>
 </html>
