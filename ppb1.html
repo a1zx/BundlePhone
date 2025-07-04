@@ -165,7 +165,7 @@
       font-size: 1.15rem;
     }
     .modal-continue:active { opacity: 0.89; }
-    /* Delivery animation: ультра-адаптивно */
+    /* Delivery animation: гарантированно уезжает + плашка поверх! */
     .delivery-anim-bg {
       position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(245,247,252,0.99);
       z-index: 130; display: flex; align-items: center; justify-content: center;
@@ -174,60 +174,63 @@
     }
     .delivery-stage {
       width: 100vw; height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
-      min-height: 420px;
+      min-height: 380px;
     }
     .delivery-car-img {
-      position: absolute; left: 50%; top: 49%;
-      width: 340px; max-width: 95vw; height: auto;
-      transform: translate(-50%,-50%) scale(1.05);
+      position: absolute; left: -90vw; top: 49%;
+      width: 340px; max-width: 96vw; height: auto;
+      transform: translateY(-50%) scale(1.09);
       z-index: 20;
       filter: drop-shadow(0 12px 32px #0c1527aa);
       opacity: 0;
-      animation: car-in2 0.92s cubic-bezier(.46,1.4,.61,1) forwards, car-out2 1.2s 1.65s cubic-bezier(.6,1.1,.7,1.3) forwards;
+      will-change: left, opacity;
+      animation: car-in2 1.25s cubic-bezier(.46,1.4,.61,1), car-out2 1.2s 1.32s cubic-bezier(.6,1.1,.7,1.3) forwards;
     }
     @keyframes car-in2 {
-      0%   { left: -80vw; opacity: 0;}
+      0%   { left: -90vw; opacity: 0;}
       45%  { opacity: 1;}
-      100% { left: 50%; opacity: 1;}
+      100% { left: 50vw; opacity: 1;}
     }
     @keyframes car-out2 {
-      0% { left: 50%; }
-      100% { left: 115vw;}
+      0%   { left: 50vw; }
+      100% { left: 135vw; }
     }
     .delivery-greenbox {
-      position: absolute; top: 44%; left: 50%; transform: translate(-50%,-50%) scale(0.7);
+      position: absolute; top: 46%; left: 50%; transform: translate(-50%,-50%) scale(0.7);
       min-width: 255px; max-width: 95vw; background: #41d87e;
-      border-radius: 21px; box-shadow: 0 2px 26px #1baa6045;
+      border-radius: 29px; box-shadow: 0 2px 26px #1baa6045;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 42px 23px 28px 23px;
+      padding: 52px 23px 36px 23px;
       opacity: 0; z-index: 110;
-      animation: greenin 0.42s 2.85s cubic-bezier(.39,1.2,.6,1.1) forwards;
+      animation: greenin 0.42s 2.55s cubic-bezier(.39,1.2,.6,1.1) forwards;
+      pointer-events: none;
     }
     @keyframes greenin {
-      0% { opacity:0; transform: translate(-50%,-50%) scale(0.5);}
+      0% { opacity:0; transform: translate(-50%,-50%) scale(0.3);}
       80% { opacity:.7; }
       100% { opacity:1; transform: translate(-50%,-50%) scale(1);}
     }
     .delivery-greenbox .check {
-      width: 64px; height: 64px; background: #fff;
+      width: 74px; height: 74px; background: #fff;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      color: #41d87e; font-size: 2.8rem; margin-bottom: 18px; box-shadow: 0 1px 14px #fff8;
+      color: #41d87e; font-size: 2.6rem; margin-bottom: 22px; box-shadow: 0 1px 14px #fff8;
     }
     .delivery-greenbox .label {
-      color: #fff; font-size: 1.38rem; font-weight: 900; letter-spacing: 0.01em; text-align: center;
+      color: #fff; font-size: 1.46rem; font-weight: 900; letter-spacing: 0.01em; text-align: center;
       text-shadow: 0 2px 14px #0a55158a;
     }
-    @media (max-width: 650px) {
+    @media (max-width: 700px) {
       .main-list {max-width: 100vw;}
       .card {width: 96vw; max-width: 220px;}
       .modal {max-width:98vw;}
-      .delivery-car-img {width:88vw; min-width:140px; max-width:96vw;}
-      .delivery-greenbox {max-width:93vw;}
+      .delivery-car-img {width:92vw; min-width:140px; max-width:99vw;}
+      .delivery-greenbox {max-width:95vw;}
     }
     @media (max-width: 400px) {
       .main-list {gap: 9px;}
       .card {min-height: 180px;}
       .delivery-car-img {width:97vw;}
+      .delivery-greenbox {padding:36px 6vw 24px 6vw;}
     }
   </style>
 </head>
@@ -340,7 +343,7 @@
     }
     renderList(phones);
 
-    let modalOpen = false, isDelivering = false;
+    let modalOpen = false, isDelivering = false, animTimeout;
     document.body.addEventListener('click', function(e){
       if (isDelivering || modalOpen) return; // overlay = нельзя кликать!
       let card = e.target.closest('.card');
@@ -444,11 +447,19 @@
           </div>
         </div>
       `;
+      let green = document.getElementById('delivery-green');
+      // Скрываем плашку пока машина не уехала
+      green.style.opacity = 0;
+      green.style.pointerEvents = "none";
       deliveryBg.classList.remove('hidden');
+      // Плашка строго после ухода машины
+      setTimeout(()=>{
+        green.style.opacity = 1;
+      }, 2450); // чуть позже, чем уход анимации car (уходит за 2.4s)
       setTimeout(()=>{
         deliveryBg.classList.add('hidden');
         isDelivering = false;
-      }, 3800);
+      }, 3750);
     }
 
     // Для поиска
@@ -462,17 +473,22 @@
       );
     });
 
+    // Стопим overlay при загрузке
     window.addEventListener('DOMContentLoaded',()=>{
       setTimeout(()=>{
         if (!modalBg.classList.contains('hidden')) modalBg.classList.add('hidden');
         if (!deliveryBg.classList.contains('hidden')) deliveryBg.classList.add('hidden');
-      },2000);
+      },700);
     });
     window.addEventListener('keydown', function(evt) {
       if (evt.key === "Escape") {
         if (!modalBg.classList.contains('hidden')) closeModal();
         if (!deliveryBg.classList.contains('hidden')) deliveryBg.classList.add('hidden');
       }
+    });
+    // Стопим случайный скролл при overlay
+    [modalBg, deliveryBg].forEach(bg => {
+      bg.addEventListener('touchmove', e => { if (!bg.classList.contains('hidden')) e.preventDefault(); }, {passive:false});
     });
   </script>
 </body>
