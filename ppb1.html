@@ -161,7 +161,7 @@
       transition: background .13s; letter-spacing: 0.04em;
     }
     .modal-continue:active { opacity: 0.89; }
-    /* Delivery animation reworked */
+    /* Delivery animation: только машина, по центру */
     .delivery-anim-bg {
       position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(245,247,252,0.98);
       z-index: 130; display: flex; align-items: center; justify-content: center;
@@ -172,60 +172,48 @@
       min-height: 420px;
     }
     .delivery-car-img {
-      position: absolute; left: calc(50% - 140px); top: 50%;
-      width: 230px; height: 110px; transform: translateY(-20px) scale(1.03);
+      position: absolute; left: 50%; top: 49%;
+      width: 340px; max-width: 82vw; height: auto;
+      transform: translate(-50%,-50%) scale(1.08);
       z-index: 20;
       filter: drop-shadow(0 12px 32px #0c1527aa);
       opacity: 0;
-      animation: car-in 0.7s cubic-bezier(.46,1.4,.61,1) forwards, car-out 0.8s 2s cubic-bezier(.6,1.1,.7,1.3) forwards;
+      animation: car-in2 0.9s cubic-bezier(.46,1.4,.61,1) forwards, car-out2 1s 1.7s cubic-bezier(.6,1.1,.7,1.3) forwards;
     }
-    @keyframes car-in {
-      0%   { left: -270px; opacity: 0;}
+    @keyframes car-in2 {
+      0%   { left: -420px; opacity: 0;}
       45%  { opacity: 1;}
-      100% { left: calc(50% - 140px); opacity: 1;}
+      100% { left: 50%; opacity: 1;}
     }
-    @keyframes car-out {
-      0% { left: calc(50% - 140px); }
-      100% { left: 110vw;}
+    @keyframes car-out2 {
+      0% { left: 50%; }
+      100% { left: 120vw;}
     }
-    .delivery-phone {
-      position: absolute; left: 50%; top: 30vh;
-      width: 85px; height: 110px; z-index: 31;
-      transform: translate(-50%, -75vh) scale(1.13);
-      opacity: 0;
-      animation: phone-fall 1.2s 0.6s cubic-bezier(.2,1.4,.6,1) forwards, phone-out 0.55s 2.05s cubic-bezier(.4,1.2,.9,1.1) forwards;
+    .delivery-greenbox {
+      position: absolute; top: 44%; left: 50%; transform: translate(-50%,-50%) scale(0.7);
+      min-width: 255px; background: #41d87e;
+      border-radius: 21px; box-shadow: 0 2px 26px #1baa6045;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 42px 23px 28px 23px;
+      opacity: 0; z-index: 110;
+      animation: greenin 0.37s 2.3s cubic-bezier(.39,1.2,.6,1.1) forwards;
     }
-    @keyframes phone-fall {
-      0%   { transform: translate(-50%, -75vh) scale(1.13); opacity: 0;}
-      40%  { opacity: 1;}
-      88%  { transform: translate(-50%, 7vh) scale(1.03);}
-      100% { transform: translate(-50%, 34px) scale(1);}
-    }
-    @keyframes phone-out {
-      0% { opacity:1; }
-      100% { opacity:0; transform: translate(-50%, 34px) scale(1);}
-    }
-    .delivery-check {
-      position: absolute; left: 50%; top: 39vh; transform: translate(-50%,-50%) scale(0.2);
-      background: #42d57d; border-radius: 50%; width: 62px; height: 62px; box-shadow: 0 2px 18px #13ac4845;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.3rem; color: #fff; z-index: 100; opacity: 0;
-      animation: showCheck 0.33s 2.27s cubic-bezier(.47,2.1,.5,1) forwards;
-    }
-    @keyframes showCheck {
-      0% { opacity:0; transform: translate(-50%,-50%) scale(0.5);}
+    @keyframes greenin {
+      0% { opacity:0; transform: translate(-50%,-50%) scale(0.4);}
       80% { opacity:.7; }
       100% { opacity:1; transform: translate(-50%,-50%) scale(1);}
     }
-    .delivery-label {
-      font-size: 1.25rem; color: #2d3ea3; text-align: center; font-weight: bold;
-      width: 100%; letter-spacing: 0.01em; position: absolute; left: 0; right: 0; top: 65vh;
-      opacity: 0; animation: showLabel 0.34s 2.36s both; text-shadow: 0 1.5px 8px #b6bffc13;
+    .delivery-greenbox .check {
+      width: 64px; height: 64px; background: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #41d87e; font-size: 2.8rem; margin-bottom: 18px; box-shadow: 0 1px 14px #fff8;
     }
-    @keyframes showLabel { 0% { opacity:0; transform:translateY(10px);} 100% { opacity:1; transform:translateY(0);} }
+    .delivery-greenbox .label {
+      color: #fff; font-size: 1.38rem; font-weight: 900; letter-spacing: 0.01em; text-align: center;
+      text-shadow: 0 2px 14px #0a55158a;
+    }
     @media (max-width: 700px) {
-      .delivery-car-img { width: 48vw; min-width: 150px; left: calc(50% - 24vw);}
-      .delivery-phone { width: 16vw; min-width: 65px;}
+      .delivery-car-img { width: 65vw; max-width: 90vw; }
     }
   </style>
 </head>
@@ -243,13 +231,11 @@
   <div id="modal-bg" class="modal-bg hidden"></div>
   <div id="delivery-bg" class="delivery-anim-bg hidden"></div>
   <script>
-    // SIM icons
     const simIconsArr = [
       "https://i.ibb.co/S42CDLr4/123.png",
       "https://i.ibb.co/qMStyHkS/12321332.png",
       "https://i.ibb.co/ZpkDqBWf/112344.png"
     ];
-    // Phones
     const phones = [
       { title: "iPhone 16 Pro", desc: "Apple flagship", rating: 4.8,
         img: "https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp",
@@ -307,7 +293,6 @@
         storages: ["256GB", "512GB", "1TB"]
       }
     ];
-    // Helper — всегда все симки для всех телефонов
     function simIcons() {
       return simIconsArr.map(url =>
         `<img class="sim-icon-img" src="${url}" alt="SIM">`
@@ -340,29 +325,23 @@
     }
     renderList(phones);
 
-    document.getElementById('search').addEventListener('input', function(){
-      const val = this.value.trim().toLowerCase();
-      renderList(
-        phones.filter(p=>
-          p.title.toLowerCase().includes(val) ||
-          p.desc.toLowerCase().includes(val)
-        )
-      );
+    let modalOpen = false, isDelivering = false;
+    document.body.addEventListener('click', function(e){
+      if (isDelivering || modalOpen) return; // <--- overlay = нельзя кликать!
+      let card = e.target.closest('.card');
+      if (card) {
+        let idx = +card.dataset.idx;
+        showModal(idx);
+      }
     });
 
     let modalBg = document.getElementById('modal-bg');
     let deliveryBg = document.getElementById('delivery-bg');
     let selectedPhone = null, selectedColor = 0, selectedSim = 0, selectedStorage = 0;
 
-    document.body.addEventListener('click', function(e){
-      let card = e.target.closest('.card');
-      if (card && !modalBg.classList.contains('modal-bg-open')) {
-        let idx = +card.dataset.idx;
-        showModal(idx);
-      }
-    });
-
     function showModal(idx) {
+      if (isDelivering) return;
+      modalOpen = true;
       selectedPhone = phones[idx];
       selectedColor = 0;
       selectedSim = 0;
@@ -395,9 +374,14 @@
       `;
       modalBg.classList.remove('hidden');
       modalBg.classList.add('modal-bg-open');
+      setTimeout(()=>{ modalOpen = false; }, 400);
+
+      // ВАЖНО: стопаем всплытие событий на overlay!
+      modalBg.querySelector('.modal').addEventListener('click', e => e.stopPropagation());
 
       modalBg.querySelectorAll('.modal-color').forEach(c=>{
-        c.onclick = function(){
+        c.onclick = function(e){
+          e.stopPropagation();
           modalBg.querySelectorAll('.modal-color').forEach(el=>el.classList.remove('selected'));
           this.classList.add('selected');
           selectedColor = +this.dataset.i;
@@ -405,58 +389,56 @@
         }
       });
       modalBg.querySelectorAll('.modal-storage').forEach(s=>{
-        s.onclick = function(){
+        s.onclick = function(e){
+          e.stopPropagation();
           modalBg.querySelectorAll('.modal-storage').forEach(el=>el.classList.remove('selected'));
           this.classList.add('selected');
           selectedStorage = +this.dataset.i;
         }
       });
       modalBg.querySelectorAll('.modal-sim').forEach(s=>{
-        s.onclick = function(){
+        s.onclick = function(e){
+          e.stopPropagation();
           modalBg.querySelectorAll('.modal-sim').forEach(el=>el.classList.remove('selected'));
           this.classList.add('selected');
           selectedSim = +this.dataset.i;
         }
       });
-      modalBg.querySelector('.modal-close').onclick = ()=>{
-        modalBg.classList.add('hidden');
-        modalBg.classList.remove('modal-bg-open');
+      modalBg.querySelector('.modal-close').onclick = function(e){ e.stopPropagation(); closeModal(); };
+      modalBg.querySelector('.modal-continue').onclick = function(e){
+        e.stopPropagation(); closeModal(); startDeliveryAnim();
       };
-      modalBg.querySelector('.modal-continue').onclick = ()=>{
-        modalBg.classList.add('hidden');
-        modalBg.classList.remove('modal-bg-open');
-        startDeliveryAnim(selectedPhone.colors[selectedColor].url);
-      };
+      // Защита от ESC, если overlay
       document.onkeydown = function(evt){
-        if (evt.key === "Escape") {
-          modalBg.classList.add('hidden');
-          modalBg.classList.remove('modal-bg-open');
-        }
+        if (evt.key === "Escape" && modalOpen) closeModal();
       }
     }
+    function closeModal() {
+      modalBg.classList.add('hidden');
+      modalBg.classList.remove('modal-bg-open');
+      modalOpen = false;
+    }
 
-    function startDeliveryAnim(phoneImg) {
+    function startDeliveryAnim() {
+      isDelivering = true;
       deliveryBg.innerHTML = `
         <div class="delivery-stage">
-          <img src="https://i.ibb.co/6cP27vRs/5875918.png" class="delivery-car-img" id="car-img" alt="truck">
-          <img src="${phoneImg}" class="delivery-phone" id="animPhone" alt="">
-          <div class="delivery-check" id="delivery-check">
-            <svg width="36" height="36" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="none"/><path d="M8.5 18l5 5 10-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <img src="https://i.ibb.co/MytdP8qP/2555001.png" class="delivery-car-img" id="car-img" alt="truck">
+          <div class="delivery-greenbox" id="delivery-green">
+            <div class="check">
+              <svg width="42" height="42" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="none"/><path d="M8.5 18l5 5 10-10" stroke="#41d87e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="label">Item on the way!</div>
           </div>
-          <div class="delivery-label" id="delivery-label">Item on the way! 🚚</div>
         </div>
       `;
       deliveryBg.classList.remove('hidden');
-      document.getElementById('delivery-check').style.opacity = 0;
-      document.getElementById('delivery-label').style.opacity = 0;
       setTimeout(()=>{
-        document.getElementById('delivery-check').style.opacity = 1;
-        document.getElementById('delivery-label').style.opacity = 1;
-      }, 2350);
-      setTimeout(()=>{ deliveryBg.classList.add('hidden'); }, 3500);
+        deliveryBg.classList.add('hidden');
+        isDelivering = false;
+      }, 4000);
     }
 
-    // Багфикс: если overlay вдруг застрял, автоскрытие через 3 сек после загрузки
     window.addEventListener('DOMContentLoaded',()=>{
       setTimeout(()=>{
         if (!modalBg.classList.contains('hidden')) modalBg.classList.add('hidden');
@@ -465,13 +447,8 @@
     });
     window.addEventListener('keydown', function(evt) {
       if (evt.key === "Escape") {
-        if (!modalBg.classList.contains('hidden')) {
-          modalBg.classList.add('hidden');
-          modalBg.classList.remove('modal-bg-open');
-        }
-        if (!deliveryBg.classList.contains('hidden')) {
-          deliveryBg.classList.add('hidden');
-        }
+        if (!modalBg.classList.contains('hidden')) closeModal();
+        if (!deliveryBg.classList.contains('hidden')) deliveryBg.classList.add('hidden');
       }
     });
   </script>
