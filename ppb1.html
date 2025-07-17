@@ -142,7 +142,6 @@
     .modal-storage {
       min-width: 57px; padding: 7px 12px; border-radius: 10px; font-size: 1.1rem; background: #f3f4fa;
       color: var(--main); border: 2.3px solid #e6e7fb; cursor: pointer; font-weight: 700;
-      letter-spacing: 0.01em; transition: border .14s, background .12s, color .13s;
     }
     .modal-storage.selected { border: 2.6px solid var(--main2); background: #fff4f6; color: var(--main2); box-shadow: 0 1px 7px #fe2c5520; }
     .modal-sim {
@@ -165,8 +164,6 @@
       font-size: 1.15rem;
     }
     .modal-continue:active { opacity: 0.89; }
-
-    /* Delivery animation — полностью на transform, максимально плавно */
     .delivery-anim-bg {
       position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(245,247,252,0.99);
       z-index: 130; display: flex; align-items: center; justify-content: center;
@@ -250,46 +247,98 @@
   <div id="modal-bg" class="modal-bg hidden"></div>
   <div id="delivery-bg" class="delivery-anim-bg hidden"></div>
   <script>
-    // ----------- DATA ------------
     const simIconsArr = [
       "https://i.ibb.co/S42CDLr4/123.png",
       "https://i.ibb.co/qMStyHkS/12321332.png",
       "https://i.ibb.co/ZpkDqBWf/112344.png"
     ];
     const phones = [
-      { title: "iPhone 16 Pro", desc: "Apple flagship", rating: 4.8,
-        img: "https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp",
+      // IPHONES новые
+      {
+        title: "iPhone 16 (Black)",
+        desc: "Apple flagship, 2024",
+        rating: 4.9,
+        img: "https://i.ibb.co/G4JYdB1R/black-16-3-is.png",
         colors: [
-          {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
-          {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
-          {name:"White Titanium", url:"https://i.ibb.co/r2m0tP1j/white-titanium.webp", hex:"#f9f9f9"},
-        ],
-        storages: ["256GB", "512GB", "1TB"]
-      },
-      { title: "iPhone 16", desc: "Apple, compact", rating: 4.4,
-        img: "https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp",
-        colors: [
-          {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
-          {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
+          {name:"Black", url:"https://i.ibb.co/G4JYdB1R/black-16-3-is.png", hex:"#222426"}
         ],
         storages: ["128GB", "256GB", "512GB"]
       },
-      { title: "15 Pro Max", desc: "Apple, premium", rating: 4.5,
-        img: "https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp",
+      {
+        title: "iPhone 16 Pro Max (Black)",
+        desc: "Apple flagship, Pro Max",
+        rating: 5.0,
+        img: "https://i.ibb.co/LDcHYXk4/blacktitanium-16pro-MAX-1-is.png",
         colors: [
-          {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#363636"},
-          {name:"Natural Titanium", url:"https://i.ibb.co/Vp2KFDjw/natural-titanium-1-700x700.webp", hex:"#cdc6bb"},
+          {name:"Black Titanium", url:"https://i.ibb.co/LDcHYXk4/blacktitanium-16pro-MAX-1-is.png", hex:"#232527"}
         ],
-        storages: ["256GB", "512GB"]
+        storages: ["256GB", "512GB", "1TB"]
       },
-      { title: "iPhone 14", desc: "Apple, compact", rating: 3.8,
-        img: "https://i.ibb.co/r2m0tP1j/white-titanium.webp",
+      {
+        title: "iPhone 16 (White)",
+        desc: "Apple, compact, 2024",
+        rating: 4.8,
+        img: "https://i.ibb.co/LXt6bxWY/white-16-3-is.png",
         colors: [
-          {name:"White Titanium", url:"https://i.ibb.co/r2m0tP1j/white-titanium.webp", hex:"#f9f9f9"},
+          {name:"White", url:"https://i.ibb.co/LXt6bxWY/white-16-3-is.png", hex:"#f8f8f8"}
+        ],
+        storages: ["128GB", "256GB", "512GB"]
+      },
+      {
+        title: "iPhone 16 Pro Max (White)",
+        desc: "Apple Pro Max, 2024",
+        rating: 4.9,
+        img: "https://i.ibb.co/Swm5D3yd/whitetitanium-16pro-MAX-1-is.png",
+        colors: [
+          {name:"White Titanium", url:"https://i.ibb.co/Swm5D3yd/whitetitanium-16pro-MAX-1-is.png", hex:"#f7f7f7"}
+        ],
+        storages: ["256GB", "512GB", "1TB"]
+      },
+      {
+        title: "iPhone 15 (Black)",
+        desc: "Apple, classic, 2023",
+        rating: 4.7,
+        img: "https://i.ibb.co/XxnBRDS6/15-Black-40-is.png",
+        colors: [
+          {name:"Black", url:"https://i.ibb.co/XxnBRDS6/15-Black-40-is.png", hex:"#25272a"}
         ],
         storages: ["128GB", "256GB"]
       },
-      { title: "Samsung Galaxy S25", desc: "Silver Shadow, 2025", rating: 4.6,
+      {
+        title: "iPhone 15 (Blue)",
+        desc: "Apple, blue, 2023",
+        rating: 4.7,
+        img: "https://i.ibb.co/39DmR16k/15-Blu-4-is.png",
+        colors: [
+          {name:"Blue", url:"https://i.ibb.co/39DmR16k/15-Blu-4-is.png", hex:"#8bb1e2"}
+        ],
+        storages: ["128GB", "256GB"]
+      },
+      {
+        title: "iPhone 15 Pro Max (Black)",
+        desc: "Apple Pro Max, Black, 2023",
+        rating: 4.8,
+        img: "https://i.ibb.co/whbmT25Y/15-pro-max-black-titan-4-is-kopiya.png",
+        colors: [
+          {name:"Black Titanium", url:"https://i.ibb.co/whbmT25Y/15-pro-max-black-titan-4-is-kopiya.png", hex:"#232527"}
+        ],
+        storages: ["256GB", "512GB"]
+      },
+      {
+        title: "iPhone 15 Pro Max (White)",
+        desc: "Apple Pro Max, White, 2023",
+        rating: 4.8,
+        img: "https://i.ibb.co/cSnPsH6V/15-pro-max-white-titan-4-is-kopiya.png",
+        colors: [
+          {name:"White Titanium", url:"https://i.ibb.co/cSnPsH6V/15-pro-max-white-titan-4-is-kopiya.png", hex:"#f8f8f8"}
+        ],
+        storages: ["256GB", "512GB"]
+      },
+      // SAMSUNG & VERTU
+      {
+        title: "Samsung Galaxy S25",
+        desc: "Silver Shadow, 2025",
+        rating: 4.6,
         img: "https://i.ibb.co/RTPKzfsV/smartfon-samsung-galaxy-s25-12-512gb-silver-shadow-sm-s931bzsheuc-4ec170bd-d08d-457a-a944-e5596e9709.webp",
         colors: [
           {name:"Silver Shadow", url:"https://i.ibb.co/RTPKzfsV/smartfon-samsung-galaxy-s25-12-512gb-silver-shadow-sm-s931bzsheuc-4ec170bd-d08d-457a-a944-e5596e9709.webp", hex:"#ccd3db"},
@@ -297,22 +346,18 @@
         ],
         storages: ["256GB", "512GB", "1TB"]
       },
-      { title: "Vertu Metavertu 2", desc: "Web3 AI Phone", rating: 4.9,
+      {
+        title: "Vertu Metavertu 2",
+        desc: "Web3 AI Phone",
+        rating: 4.9,
         img: "https://i.ibb.co/ccDD5vLz/vertu-metavertu-2-calfskin-web3-ai-phone-512gb-white-f0a5af07-dc38-4fa6-bbd0-ec93e6b6db4e-3-png.webp",
         colors: [
           {name:"White Calfskin", url:"https://i.ibb.co/ccDD5vLz/vertu-metavertu-2-calfskin-web3-ai-phone-512gb-white-f0a5af07-dc38-4fa6-bbd0-ec93e6b6db4e-3-png.webp", hex:"#fafafa"}
         ],
         storages: ["512GB"]
-      },
-      { title: "iPhone 16 Pro Max", desc: "Blue Titanium", rating: 4.7,
-        img: "https://i.ibb.co/Zz1YyBNH/iphone-16-pro-max-512-gb-blue-titanium-5-png.webp",
-        colors: [
-          {name:"Blue Titanium", url:"https://i.ibb.co/Zz1YyBNH/iphone-16-pro-max-512-gb-blue-titanium-5-png.webp", hex:"#668caa"},
-          {name:"Black Titanium", url:"https://i.ibb.co/sdzH9qy6/black-titanium-1-700x700.webp", hex:"#232527"}
-        ],
-        storages: ["256GB", "512GB", "1TB"]
       }
     ];
+
     function simIcons() {
       return simIconsArr.map(url =>
         `<img class="sim-icon-img" src="${url}" alt="SIM">`
@@ -347,7 +392,7 @@
 
     let modalOpen = false, isDelivering = false;
     document.body.addEventListener('click', function(e){
-      if (isDelivering || modalOpen) return; // overlay = нельзя кликать!
+      if (isDelivering || modalOpen) return;
       let card = e.target.closest('.card');
       if (card) {
         let idx = +card.dataset.idx;
@@ -436,7 +481,7 @@
       modalOpen = false;
     }
 
-    // --- ЛУЧШАЯ анимация delivery ---
+    // --- delivery animation ---
     function startDeliveryAnim() {
       isDelivering = true;
       deliveryBg.innerHTML = `
@@ -452,25 +497,20 @@
       `;
       const car = document.getElementById('car-img');
       const green = document.getElementById('delivery-green');
-      // Скрываем плашку
       green.classList.remove('visible');
       deliveryBg.classList.remove('hidden');
-      // Машина подъезжает к центру (0.85s)
       setTimeout(()=>{ car.classList.add('visible'); }, 40);
-      // Стоит на месте 0.7s (с вау-эффектом)
       setTimeout(()=>{ car.classList.add('leaving'); }, 930);
-      // Плашка — только когда машина полностью уехала (ещё 1.2s)
       setTimeout(()=>{
         green.classList.add('visible');
       }, 2170);
-      // Всё убирается только после плавного fade-in плашки
       setTimeout(()=>{
         deliveryBg.classList.add('hidden');
         isDelivering = false;
       }, 3250);
     }
 
-    // Для поиска
+    // Поиск
     document.getElementById('search').addEventListener('input', function(){
       const val = this.value.trim().toLowerCase();
       renderList(
@@ -481,7 +521,6 @@
       );
     });
 
-    // Стопим overlay при загрузке
     window.addEventListener('DOMContentLoaded',()=>{
       setTimeout(()=>{
         if (!modalBg.classList.contains('hidden')) modalBg.classList.add('hidden');
@@ -494,7 +533,6 @@
         if (!deliveryBg.classList.contains('hidden')) deliveryBg.classList.add('hidden');
       }
     });
-    // Стопим случайный скролл при overlay
     [modalBg, deliveryBg].forEach(bg => {
       bg.addEventListener('touchmove', e => { if (!bg.classList.contains('hidden')) e.preventDefault(); }, {passive:false});
     });
